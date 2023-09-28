@@ -15,6 +15,11 @@ const postSchema = new Schema(
       type: {type: Schema.Types.ObjectId, ref: 'User'},
     },
 
+    // publicationDate: {
+    //   type: Date,
+    //   default: Date.now,
+    // },
+
     comments: [
       {
         type: Schema.Types.ObjectId, ref: 'Comment',
