@@ -29,7 +29,7 @@ router.get('/post', async (req, res, next) => {
 // Read one
 router.get('/post/:postId', async (req, res, next) => {
   try {
-    const postToReadOne = await Post.findById(req.params.postId);
+    const postToReadOne = await Post.findById(req.params.postId).populate('comments');
     res.json({ succes: true, postToReadOne });
   } catch(err) {
     res.json({ succes: false, error: err });
