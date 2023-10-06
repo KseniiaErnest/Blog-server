@@ -29,12 +29,20 @@ router.get('/post', async (req, res, next) => {
 // Read one
 router.get('/post/:postId', async (req, res, next) => {
   try {
-    const postToReadOne = await Post.findById(req.params.postId);
-    res.json({ succes: true, postToReadOne });
+    const postId = req.params.postId;
+    
+    const postToReadOne = await Post.findById(postId)
+      .populate('comments'); // Populate the 'comments' field
+    
+    if (!postToReadOne) {
+      return res.status(404).json({ message: 'No post with that ID' });
+    }
+    
+    res.json({ success: true, postToReadOne });
   } catch(err) {
-    res.json({ succes: false, error: err });
+    res.json({ success: false, error: err });
   }
-})
+});
 
 // Update
 router.put('/post/:postId', async (req, res, next) => {

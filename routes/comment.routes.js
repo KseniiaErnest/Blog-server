@@ -40,6 +40,22 @@ router.post('/comment', async (req, res, next) => {
   }
 });
 
+// Create for a specific post
+router.post('/comment/:postId', async (req, res, next) => {
+  try {
+    const postId = req.params.postId;
+    const commentData = { ...req.body, postId }; // Include the postId in the comment data
+    const comment = await Comment.create(commentData);
+    
+    // Update the associated post's comments array
+    await Post.findByIdAndUpdate(postId, { $push: { comments: comment._id } });
+
+    res.json({ success: true, comment });
+  } catch (err) {
+    res.json({ success: false, error: err });
+  }
+});
+
 // Update
 router.put('/comment/:commentId', async (req, res, next) => {
   try {
